@@ -1,6 +1,8 @@
 # medios
 Ejercicios de la clase diseño en medios interactivos 
-Indice
+
+Indice de ejercicios en el semestre
+
 1. [Forma y Color](https://s-rozo.github.io/mediosInteractivos/01)
 2. [Repeticiòn](https://s-rozo.github.io/mediosInteractivos/02)
 3. [Flipbook](https://s-rozo.github.io/mediosInteractivos/03)
