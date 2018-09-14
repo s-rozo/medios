@@ -17,7 +17,7 @@ var posXB = 0;
   var posXR = 0;
 
 function setup() {
-  createCanvas(2000, 2000);
+  createCanvas(windowWidth, windowHeight);
 }
 
 function draw() {
