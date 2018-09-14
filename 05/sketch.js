@@ -17,7 +17,7 @@ var posXB = 0;
   var posXR = 0;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(2000, 2000);
 }
 
 function draw() {
@@ -194,5 +194,4 @@ function draw() {
     endShape()
   }
   pop();
-	print(carga);
 }
