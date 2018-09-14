@@ -8,4 +8,4 @@ Indice de ejercicios en el semestre
 3. [Flipbook](https://s-rozo.github.io/mediosInteractivos/03)
 4. [Herramienta de Dibujo](https://s-rozo.github.io/mediosInteractivos/04)
 5. [Reloj](https://s-rozo.github.io/mediosInteractivos/05)
-i. [Reloj Pantalla completa](https://s-rozo.github.io/mediosInteractivos/05.2)
+  a. [Reloj Pantalla completa](https://s-rozo.github.io/mediosInteractivos/05.2)
