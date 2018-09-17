@@ -17,20 +17,23 @@ var posXB = 0;
   var posXR = 0;
 
 function setup() {
-  createCanvas(2000, 2000);
+  createCanvas(1000, 1000);
 }
 
 function draw() {
   background(colback);
   
-  
+  //Variables de hora
   secs = second();
   mins = minute();
   hours = hour();
   
+  //Movimiento de los rect rojos por segundo en el canvas
   movTemp = map(secs,0,59,(-200*width)/400,width );
   
-  tiempo = hours + mins/60 + secs/3600;
+  //Calculos de cuanto tiene que estar cargada la pila dependiendo del porcentaje y la hora del dia.
+  //Si estoy despierto o dormido.
+  tiempo = hours + mins/60 + secs/3600+3;
   despierto = tiempo-4.5
   descarga = (despierto/18)*100;
   carga= -height/4+(descarga*height)/400; 
@@ -49,14 +52,17 @@ function draw() {
     carga = -((descarga*height)/400);
   }
   
+  
+  
 
+  //rectangulos azules y rojos junto con su movimiento que muestra el estres de ida y vuelta a casa.
   push();
   noStroke();
   fill(0,0,255,171);
   rect(posXB, height/8, (200*width)/400,(50*height)/400);
   if((tiempo > 17.5 && tiempo <20.5)||(tiempo > 6 && tiempo < 8.5))
   {
-  	posXB = ((width+200) - millis()%1000)*5;
+  	posXB = ((width) - millis()%1000)*20;
   }
   else
   {
@@ -69,7 +75,7 @@ function draw() {
   rect(posXB, height/2.3, (200*width)/400,(50*height)/400);
   if((tiempo > 17.5 && tiempo <20.5)||(tiempo > 6 && tiempo < 8.5))
   {
-  	posXB = ((width+200) - millis()%1000)*5;
+  	posXB = ((width) - millis()%1000)*20;
   }
   else
   {
@@ -83,7 +89,7 @@ function draw() {
   rect(posXB, height/1.3, (200*width)/400,(50*height)/400);
   if((tiempo > 17.5 && tiempo <20.5)||(tiempo > 6 && tiempo < 8.5))
   {
-  	posXB = ((width+200) - millis()%1000)*5;
+  	posXB = ((width) - millis()%1000)*20;
   }
   else
   {
@@ -161,6 +167,8 @@ function draw() {
   }
   pop();
   
+  //Construccion de la pila con su establecimiento de carga.
+  
   stroke(255) 
 	fill(0);
   strokeWeight(15);
@@ -180,6 +188,7 @@ function draw() {
   rect(width/2.37,height/1.43,width/5.2,carga);
   pop();
   
+  //Aparicion del rayo de carga dependiendo de la carga y la hora.
   push();
   fill(255);
   if(carga >= -20 || (tiempo > 22.5 || tiempo < 4.5))
