@@ -8,3 +8,4 @@ Indice de ejercicios en el semestre
 3. [Flipbook](https://s-rozo.github.io/mediosInteractivos/03)
 4. [Herramienta de Dibujo](https://s-rozo.github.io/mediosInteractivos/04)
 5. [Reloj](https://s-rozo.github.io/mediosInteractivos/05)  /  [Reloj Pantalla completa](https://s-rozo.github.io/mediosInteractivos/05.2)
+6. [Deva Mahal - Down To You Video Interactivo](https://s-rozo.github.io/mediosInteractivos/06)
