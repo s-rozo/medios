@@ -8,21 +8,29 @@ var bac = [];
 var canL = 0;
 var virL = 0;
 var virC = 0;
+var sonido
+
+
+function preload()
+{
+  sonido = loadSound('assets/heart.mp3');
+}
 
 
 // Se crean las ubicaciones y objetos de cada especie del cuerpo.
 function setup() {
-  createCanvas(800, 800);
-
+  createCanvas(1500, 1500);
+	sonido.play();
+  
   for (var e = 0; e < 100; e++) {
     var x = random(0, width);
-    var y = random(150, 250);
+    var y = random(280, 580);
     red[e] = new redBlood(x, y, 0);
   }
 
   for (var m = 100; m < 200; m++) {
     var x = random(0, width);
-    var y = random(650, 550);
+    var y = random(1218, 1518);
     red[m] = new redBlood(x, y, 1);
   }
 
@@ -48,7 +56,7 @@ function setup() {
 
   for (var pa = 0; pa < 1; pa++) {
     var x = random(0, width);
-    var y = 200;
+    var y = 420;
     par[pa] = new parasite(x, y);
   }
 
@@ -67,6 +75,10 @@ function setup() {
 
 function draw() {
   background(241, 174, 105);
+  if(sonido.currentTime() >= 7)
+  {
+    sonido.jump(0);
+  }
 
   // Cada ciclo coge cada arreglo y dibuja y pone en movimiento cada celula del cuerpo.
   for (var i = 0; i < 200; i++) {
@@ -106,6 +118,8 @@ function draw() {
   metastasis();
 
   //Crea el icono de "medicina" al lado del mouse.
+ if(mouseIsPressed)
+ {
   push();
   fill(255);
   noStroke();
@@ -117,6 +131,7 @@ function draw() {
   noStroke();
   arc(mouseX + 5, mouseY - 13, 30, 30, PI, TWO_PI + QUARTER_PI, OPEN);
   pop();
+ }
 
 
 }
@@ -143,7 +158,7 @@ function redBlood(rX, rY, tipo) {
         fill(0, 170, 0);
         stroke(0, 120, 0);
       }
-      ellipse(this.x, this.y, 20, 20);
+      ellipse(this.x, this.y, 50, 50);
     }
   }
 
@@ -152,25 +167,25 @@ function redBlood(rX, rY, tipo) {
       if (this.x < 0) {
         this.x = width;
       }
-      this.x -= 5;
+      this.x -= 10;
     }
     if (this.tipo == 3) {
       if (this.x < 0) {
         this.x = width;
       }
-      this.x -= 5;
+      this.x -= 10;
     }
     if (this.tipo == 1) {
       if (this.x > width) {
         this.x = 0;
       }
-      this.x += 5;
+      this.x += 10;
     }
     if (this.tipo == 4) {
       if (this.x > width) {
         this.x = 0;
       }
-      this.x += 5;
+      this.x += 10;
     }
 
   }
@@ -196,8 +211,8 @@ function neutrophiles(wX, wY) {
     if (!this.muerto) {
       fill(150);
       stroke(170);
-      ellipse(this.x, this.y, 20, 20);
-      ellipse(this.x - 20, this.y - 10, 20, 20);
+      ellipse(this.x, this.y, 50, 50);
+      ellipse(this.x - 20, this.y - 10, 50, 50);
     }
   }
 
@@ -233,7 +248,7 @@ function virus(vX, vY) {
       fill(0, 170, 0);
       stroke(0, 120, 0);
       strokeWeight(5);
-      rect(this.x, this.y, 20, 20);
+      rect(this.x, this.y, 50, 50);
     }
   }
 
@@ -263,12 +278,12 @@ function cancer(cX, cY) {
       fill(170, 90, 170);
       stroke(100, 20, 100);
       strokeWeight(5);
-      ellipse(this.x, this.y, 20, 20);
+      ellipse(this.x, this.y, 50, 50);
       push();
       translate(this.x, this.y);
       for (var r = 0; r < 10; r++) {
         rotate(30);
-        ellipse(10, 10, 5, 5);
+        ellipse(10, 10, 10, 10);
       }
       pop();
     }
@@ -301,7 +316,7 @@ function parasite(pX, pY) {
       fill(210, 105, 30);
       stroke(110, 5, 0);
       strokeWeight(5);
-      rect(this.x, this.y, 200, 10);
+      rect(this.x, this.y, 500, 30);
     }
   }
 
@@ -309,7 +324,7 @@ function parasite(pX, pY) {
     if (this.x < -200) {
       this.x = width;
     }
-    this.x -= random(1, 5);
+    this.x -= random(10, 20);
   }
 
   this.morir = function() {
@@ -330,8 +345,8 @@ function eosinophile(eX, eY) {
       fill(255, 200, 200);
       stroke(255);
       strokeWeight(5);
-      ellipse(this.x, this.y, 20, 20);
-      ellipse(this.x - 20, this.y, 20, 20);
+      ellipse(this.x, this.y, 50, 50);
+      ellipse(this.x - 20, this.y, 50, 50);
     }
   }
 
@@ -360,7 +375,7 @@ function bacteria(bX, bY) {
       fill(153, 153, 30);
       stroke(80, 80, 0);
       strokeWeight(5);
-      ellipse(this.x, this.y, 50, 20);
+      ellipse(this.x, this.y, 100, 40);
     }
   }
 
@@ -422,13 +437,13 @@ function virosis() {
       var dvr = dist(vir[v].x, vir[v].y, red[r].x, red[r].y);
       if (dvr < 20) {
         if (red[r].type() == 0) {
-          red[r] = new redBlood(random(0, width), random(150, 250), 3);
+          red[r] = new redBlood(random(0, width), random(280, 580), 3);
           virC++;
         }
       }
       if (dvr < 20) {
         if (red[r].type() == 1) {
-          red[r] = new redBlood(random(0, width), random(550, 650), 4);
+          red[r] = new redBlood(random(0, width), random(1218, 1518), 4);
           virC++;
         }
       }
@@ -498,13 +513,13 @@ function mousePressed() {
       var dvr = dist(mouseX, mouseY, red[r].x, red[r].y);
       if (dvr < 20) {
         if (red[r].type() == 3) {
-          red[r] = new redBlood(random(0, width), random(150, 250), 0);
+          red[r] = new redBlood(random(0, width), random(280, 580), 0);
           virC--;
         }
       }
       if (dvr < 20) {
         if (red[r].type() == 4) {
-          red[r] = new redBlood(random(0, width), random(550, 650), 1);
+          red[r] = new redBlood(random(0, width), random(1218, 1518), 1);
           virC--;
         }
 
