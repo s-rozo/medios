@@ -1,3 +1,7 @@
+var capture; // variable para guardar la captura
+var tracker; // variable para guardar el tracker
+var canvas;  // variable para guardar el canvas
+
 //Variables generales del juego
 var estrellas = [];
 var gameState;
@@ -9,7 +13,7 @@ var soundtrack;
 var pops;
 var played;
 var amp;
-
+var dific;
 //Variables para el jugador
 var pImg;
 var playerBub;
@@ -46,17 +50,26 @@ var imgBouncer;
 //Cargar imagenes y varios efectos de sonido
 function preload() {
   pImg = loadImage('assets/player.png');
-  imgCla = loadImage('assets/Clavo.png')
-  imgBal = loadImage('assets/Bullet.png')
-  imgBouncer = loadImage('assets/Bouncer.png')
+  imgCla = loadImage('assets/Clavo.png');
+  imgBal = loadImage('assets/Bullet.png');
+  imgBouncer = loadImage('assets/Bouncer.png');
   soundtrack = loadSound('assets/soundtrack.mp3');
   pops = loadSound('assets/POP.mp3');
 }
 
 
-function setup() {
-  createCanvas(windowWidth, windowHeight);
+function setup() {  
+  
+  //Define la densidad de pixeles para que la imagen sea igual en todos los dispositivos
+  pixelDensity(1);
+  capture = createCapture(VIDEO); //crea una captura de video
+  capture.size(windowWidth, windowHeight);
+  
+  canvas = createCanvas(windowWidth, windowHeight);
   angleMode(DEGREES);
+  
+  capture.parent('container'); 
+  canvas.parent('container'); 
 
   //Guardar la ubicacion para las estrellas
   for (var i = 0; i < 200; i++) {
@@ -68,6 +81,8 @@ function setup() {
 
   //Metodo que reinicia el juego
   restart();
+  
+  activarTracking(); //activa el tracking para el color seleccionado
 
 
 }
@@ -107,7 +122,28 @@ function draw() {
   noStroke();
   textAlign(CENTER);
   textSize((100 * width) / 2000);
-  text('Play', width / 2, height / 1.45);
+  text('Easy', width / 2, height / 1.45);
+  pop();
+  
+   //Boton de jugar
+  push();
+  fill(100, 0, 100, opTexto);
+  strokeWeight(8);
+  rectMode(CENTER);
+  rect(width / 2, height / 1.2, (500 * width) / 2000, (200 * height) / 2000, 50);
+  noFill();
+  stroke(255, 255, 255, opTexto - 35);
+  strokeWeight(5);
+  rect(width / 2, height / 1.2, (545 * width) / 2000, (245 * height) / 2000, 50);
+  stroke(255, 255, 255, opTexto - 84);
+  strokeWeight(3);
+  rect(width / 2, height / 1.2, (575 * width) / 2000, (275 * height) / 2000, 50);
+  pop();
+  push();
+  noStroke();
+  textAlign(CENTER);
+  textSize((100 * width) / 2000);
+  text('Hard', width / 2, height / 1.18);
   pop();
 
   //autor del juego
@@ -116,6 +152,13 @@ function draw() {
   textFont('Helvetica');
   textSize((30 * width) / 2000);
   text('by: Santiago Rozo Urreta', width / 2, height / 1.05);
+  pop();
+  
+   push();
+  noStroke();
+  textFont('Chango');
+  textSize((40 * width) / 2000);
+  text('Easy: Play with fingers\nHard: Play with something yellow in front of the camera!', width / 2, height / 1.9);
   pop();
 
   if (gameState == 1) {
@@ -191,7 +234,6 @@ function draw() {
       opTexto -= 5;
       opPlayer += 5;
     }
-
 
   }
   
@@ -356,6 +398,11 @@ function mousePressed() {
       gameState = 1;
       score[1] = millis() / 100;
       score[0] = 0;
+    } else if (dist(mouseX, mouseY, width / 2, height / 1.2) <= (200 * width) / 2000) {
+      gameState = 1;
+      dific = 1;
+      score[1] = millis() / 100;
+      score[0] = 0;
     }
   } else if (gameState == 2) {
     if (dist(mouseX, mouseY, width / 2, height / 1.5) <= (200 * width) / 2000) {
@@ -367,13 +414,16 @@ function mousePressed() {
 
 //Movimiento del jugador por medio del dedo
 function mouseDragged() {
-  if (dist(mouseX, mouseY, x, y) < pTamx / 2) {
+  if (dist(mouseX, mouseY, x, y) < pTamx / 2 && dific == 0) {
     x = mouseX;
     y = mouseY;
   }
+  return false;
 }
 
 function restart() {
+  dific = 0;
+  
   //Reinicio del soundtrack e iniciacion
   if (soundtrack.isPlaying()) {
     soundtrack.jump(0)
@@ -414,4 +464,37 @@ function restart() {
 
   xR = width / 2;
   xY = height / 2;
+}
+
+//esta función activa el tracking y encuentra el color seleccionado
+function activarTracking() {
+
+  //crea un tracker de color
+  tracker = new tracking.ColorTracker(['yellow']);
+
+  //hace el tracking en la captura de la camara
+  tracking.track('video', tracker);
+
+  /*
+  / Esta es la parte importante!!!!
+  / cada vez que se encuentre un grupo de pixeles del
+  / color seleccionado
+  / se lanza un evento
+  / y se devuele un objeto con las dimensiones
+  / del grupo de pixeles
+  */
+  tracker.on('track', function (event) {
+
+    //esta funcion se ejecutacada vez que encuentra un grupo de pixeles del color seleccionado
+    event.data.forEach(function (r) { //recorre la lista de grupos encontrados
+
+      if(dific == 1)
+      {
+       //calcula el centro del cuadro
+        x = r.x + (r.width/2);
+        y = r.y + (r.height/2);
+      }
+
+    })
+  });
 }
