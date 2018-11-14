@@ -14,6 +14,8 @@ var pops;
 var played;
 var amp;
 var dific;
+var puntajeMayor = 0;
+
 //Variables para el jugador
 var pImg;
 var playerBub;
@@ -253,7 +255,8 @@ function draw() {
     
     push();
     textSize(21)
-    text('Score: ' + score[2], width/2, height/1.8);
+    text('Score: ' + score[2], width/2, height/1.7);
+    text('High Score: ' + puntajeMayor, width/2, height/1.6);
     pop();
 
     //Boton de ir al menu
@@ -261,23 +264,25 @@ function draw() {
     fill(100, 0, 100, opTexto2);
     strokeWeight(8);
     rectMode(CENTER);
-    rect(width / 2, height / 1.5, (500 * width) / 2000, (200 * height) / 2000, 50);
+    rect(width / 2, height / 1.25, (500 * width) / 2000, (200 * height) / 2000, 50);
     noFill();
     stroke(255, 255, 255, opTexto2 - 35);
     strokeWeight(5);
-    rect(width / 2, height / 1.5, (545 * width) / 2000, (245 * height) / 2000, 50);
+    rect(width / 2, height / 1.25, (545 * width) / 2000, (245 * height) / 2000, 50);
     stroke(255, 255, 255, opTexto2 - 84);
     strokeWeight(3);
-    rect(width / 2, height / 1.5, (575 * width) / 2000, (275 * height) / 2000, 50);
+    rect(width / 2, height / 1.25, (575 * width) / 2000, (275 * height) / 2000, 50);
     pop();
     push();
     noStroke();
     textAlign(CENTER);
     textSize((100 * width) / 2000);
-    text('Retry', width / 2, height / 1.45);
+    text('Retry', width / 2, height / 1.225);
     pop();
+    
   }
-  console.log(velCla);
+  
+  console.log(dist(mouseX, mouseY, width / 1.5, height / 1.5));
 }
 
 //Calse jugador para la creaciony movimiento del jugados
@@ -361,6 +366,12 @@ function loss() {
         played = true;
       }
       gameState = 2;
+			
+      if(score[0] > puntajeMayor)
+      {
+       puntajeMayor = score[0]; 
+      }
+      
       score[2] = score[0];
     }
   }
@@ -374,6 +385,7 @@ function loss() {
         played = true;
       }
         gameState = 2;
+
         score[2] = score[0];
       }
     }
@@ -387,6 +399,7 @@ function loss() {
         played = true;
       }
     gameState = 2;
+ 	 
     score[2] = score[0];
   }
 }
@@ -405,7 +418,7 @@ function mousePressed() {
       score[0] = 0;
     }
   } else if (gameState == 2) {
-    if (dist(mouseX, mouseY, width / 2, height / 1.5) <= (200 * width) / 2000) {
+    if (dist(mouseX, mouseY, width / 2, height / 1.225) <= (200 * width) / 2000) {
       restart();
     }
   }
@@ -469,8 +482,15 @@ function restart() {
 //esta función activa el tracking y encuentra el color seleccionado
 function activarTracking() {
 
+  tracking.ColorTracker.registerColor('blue', function(r, g, b) {
+			if (r < 50 && g < 50 && b < 200) {
+				return true;
+			}
+				return false;
+	});
+  
   //crea un tracker de color
-  tracker = new tracking.ColorTracker(['yellow']);
+  tracker = new tracking.ColorTracker(['blue']);
 
   //hace el tracking en la captura de la camara
   tracking.track('video', tracker);
